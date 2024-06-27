@@ -19,12 +19,12 @@ public class TaskController {
     private List<Task> tasks = new ArrayList<>();
     private int nextId = 1;
 
-    @RequestMapping("/task")
+    @RequestMapping("/tasks")
     public ResponseEntity<List<Task>> getAllTasks() {
         return ResponseEntity.ok(tasks);
     }
 
-    @RequestMapping("/task/{id}")
+    @RequestMapping("/tasks/{id}")
     public ResponseEntity<Task> getTaskById(@PathVariable("id") int id) {
         for(Task task: tasks) {
             if(task.getId() == id) {
@@ -34,14 +34,14 @@ public class TaskController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @RequestMapping(path = "/task", method = RequestMethod.POST)
+    @RequestMapping(path = "/tasks", method = RequestMethod.POST)
     public ResponseEntity<Task> createTask(@RequestBody Task task) {
         task.setId(nextId++);
         tasks.add(task);
         return new ResponseEntity<>(task, HttpStatus.CREATED);
     }
 
-    @RequestMapping(path = "/task/{id}", method=RequestMethod.PUT)
+    @RequestMapping(path = "/tasks/{id}", method=RequestMethod.PUT)
     public ResponseEntity<Task> updateTask(@RequestBody Task newTask, @PathVariable("id") int id) {
         for(Task task: tasks) {
             if(task.getId() == id) {
@@ -54,7 +54,7 @@ public class TaskController {
         return new ResponseEntity<>(newTask, HttpStatus.NO_CONTENT);
     }
 
-    @RequestMapping(path = "task/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(path = "tasks/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<Task> deleteTask(@PathVariable("id") int id) {
         for(Task task: tasks) {
             if(task.getId() == id) {
