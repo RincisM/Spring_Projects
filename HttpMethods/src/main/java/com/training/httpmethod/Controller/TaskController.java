@@ -41,7 +41,7 @@ public class TaskController {
         return new ResponseEntity<>(task, HttpStatus.CREATED);
     }
 
-    @RequestMapping(path = "/task/{id}", method=RequestMethod.GET)
+    @RequestMapping(path = "/task/{id}", method=RequestMethod.PUT)
     public ResponseEntity<Task> updateTask(@RequestBody Task newTask, @PathVariable("id") int id) {
         for(Task task: tasks) {
             if(task.getId() == id) {
