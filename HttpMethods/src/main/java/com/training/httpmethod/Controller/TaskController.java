@@ -55,14 +55,14 @@ public class TaskController {
     }
 
     @RequestMapping(path = "tasks/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity<Task> deleteTask(@PathVariable("id") int id) {
+    public ResponseEntity<String> deleteTask(@PathVariable("id") int id) {
         for(Task task: tasks) {
             if(task.getId() == id) {
                 tasks.remove(task);
-                return new ResponseEntity<>(HttpStatus.OK);
+                return ResponseEntity.ok("Deleted Successfully");
             }
         }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return ResponseEntity.ok("The task with the given id is not found.");
     }
 
 }
