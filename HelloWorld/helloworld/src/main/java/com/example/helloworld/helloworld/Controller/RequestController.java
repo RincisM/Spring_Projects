@@ -9,25 +9,25 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 
 @RestController
-@RequestMapping("/Welcome")
+@RequestMapping("/welcome")
 public class RequestController {
     @GetMapping("/v1")
-    public String Welcome() {
+    public String welcome() {
         return "Hello" + " Executed as a Default Code";
     }
 
     @GetMapping("/v2/{name}")
-    public String WelcomePV(@PathVariable("name") String name) {
+    public String welcomePathVariable(@PathVariable("name") String name) {
         return "Hello " + name + " Executing via Path Variable";
     }
 
     @GetMapping("/v3")
-    public String WelcomeQP(@RequestParam("name") String name) {
+    public String welcomeQueryParam(@RequestParam("name") String name) {
         return "Hello " + name + " Executing via Request Param";
     }
 
     @GetMapping("/v4")
-    public String WelcomeRH(@RequestHeader("name") String name) {
+    public String welcomeRequestHeader(@RequestHeader("name") String name) {
         return "Hello " + name + " Executing via Request Header";
     }
     
