@@ -31,7 +31,7 @@ public class TaskController {
                 return ResponseEntity.ok(task);
             }
         }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @RequestMapping(path = "/task", method = RequestMethod.POST)
