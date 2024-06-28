@@ -26,12 +26,18 @@ public class TaskController {
 
     @RequestMapping("/tasks/{id}")
     public ResponseEntity<Task> getTaskById(@PathVariable("id") int id) {
+        Task tempTask = null;
         for(Task task: tasks) {
             if(task.getId() == id) {
-                return ResponseEntity.ok(task);
+                tempTask = task;
+                break;
             }
         }
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        if(tempTask != null) {
+            return ResponseEntity.ok(tempTask);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
     }
 
     @RequestMapping(path = "/tasks", method = RequestMethod.POST)
@@ -43,15 +49,21 @@ public class TaskController {
 
     @RequestMapping(path = "/tasks/{id}", method=RequestMethod.PUT)
     public ResponseEntity<Task> updateTask(@RequestBody Task newTask, @PathVariable("id") int id) {
+        Task tempTask = null;
         for(Task task: tasks) {
             if(task.getId() == id) {
                 task.setTitle(newTask.getTitle());
                 task.setDescription(newTask.getDescription());
                 task.setStatus(newTask.getStatus());
-                return ResponseEntity.ok(task);
+                tempTask = task;
+                break;
             }
         }
-        return new ResponseEntity<>(newTask, HttpStatus.NO_CONTENT);
+        if(tempTask != null) {
+            return ResponseEntity.ok(tempTask);
+        } else {
+            return new ResponseEntity<>(newTask, HttpStatus.NO_CONTENT);
+        }
     }
 
     @RequestMapping(path = "tasks/{id}", method = RequestMethod.DELETE)
