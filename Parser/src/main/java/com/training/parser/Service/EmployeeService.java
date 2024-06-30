@@ -19,7 +19,7 @@ import com.training.parser.Entity.Employee;
 
 @Service
 public class EmployeeService {
-    private final String FILE_PATH = "src/main/resources/employees.json";
+    private final String FILE_PATH = "Parser/src/main/resources/employees.json";
     private JSONParser jsonParser = new JSONParser();
 
     public List<Employee> readEmployees() throws IOException, ParseException {
