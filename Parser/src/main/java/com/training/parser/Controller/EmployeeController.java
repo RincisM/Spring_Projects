@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.training.parser.Entity.Employee;
 import com.training.parser.Service.EmployeeService;
 
+// This controller will map the HTTP requests to the service methods
+
 @RestController
 @RequestMapping("/employees")
 public class EmployeeController {
