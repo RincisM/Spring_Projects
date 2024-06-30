@@ -10,12 +10,14 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.springframework.stereotype.Service;
 
 import com.training.parser.Entity.Employee;
 
 // This class contains the logic for reading from and wrting to the JSON file
 // This file is created to separate the business logic from the controller.
 
+@Service
 public class EmployeeService {
     private final String FILE_PATH = "src/main/resources/employees.json";
     private JSONParser jsonParser = new JSONParser();
