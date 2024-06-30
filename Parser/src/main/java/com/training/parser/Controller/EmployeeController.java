@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.training.parser.Entity.Employee;
 import com.training.parser.Service.EmployeeService;
 
+
 // This controller will map the HTTP requests to the service methods
 
 @RestController
@@ -35,6 +36,12 @@ public class EmployeeController {
     public Employee getEmployee(@PathVariable("id") String id) throws IOException, ParseException {
         return employeeService.getEmployee(id);
     }
+
+    @GetMapping("/department/{department}")
+    public List<Employee> getEmployeesByDepartment(@PathVariable String department) throws IOException, ParseException {
+        return employeeService.getEmployeesByDepartment(department);
+    }
+    
 
     @PostMapping
     public ResponseEntity<String> addEmployee(@RequestBody Employee employee) {

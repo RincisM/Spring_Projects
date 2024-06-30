@@ -1,26 +1,38 @@
 [
-    {
-        "id": "1",
-        "name": "John Doe",
-        "department": "Engineering",
-        "salary": 75000.0
-    },
-    {
-        "id": "2",
-        "name": "Jane Smith",
-        "department": "Marketing",
-        "salary": 65000.0
-    },
-    {
-        "id": "3",
-        "name": "Emily Johnson",
-        "department": "Finance",
-        "salary": 80000.0
-    },
-    {
-        "id": "4",
-        "name": "Michael Brown",
-        "department": "HR",
-        "salary": 60000.0
-    }
+  {
+    "name": "John Doe",
+    "workingHoursStart": "08:00",
+    "id": "1",
+    "department": "Engineering",
+    "salary": 75000.0,
+    "experience": "3.5 years",
+    "workingHoursEnd": "16:00"
+  },
+  {
+    "name": "Jane Smith",
+    "workingHoursStart": "10:00",
+    "id": "2",
+    "department": "Marketing",
+    "salary": 65000.0,
+    "experience": "5 years",
+    "workingHoursEnd": "18:00"
+  },
+  {
+    "name": "Emily Johnson",
+    "workingHoursStart": "08:00",
+    "id": "3",
+    "department": "Finance",
+    "salary": 80000.0,
+    "experience": "1 years",
+    "workingHoursEnd": "16:00"
+  },
+  {
+    "name": "Michael Brown",
+    "workingHoursStart": "09:30",
+    "id": "4",
+    "department": "HR",
+    "salary": 60000.0,
+    "experience": "2.5 years",
+    "workingHoursEnd": "17:30"
+  }
 ]

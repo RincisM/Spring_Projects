@@ -1,5 +1,7 @@
 package com.training.parser.Entity;
 
+import java.time.LocalTime;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,4 +17,7 @@ public class Employee {
     private String name;
     private String department;
     private double salary;
+    private String experience;
+    private LocalTime workingHoursStart;
+    private LocalTime workingHoursEnd;
 }
