@@ -1,1 +1,26 @@
-[]
+[
+    {
+        "id": "1",
+        "name": "John Doe",
+        "department": "Engineering",
+        "salary": 75000.0
+    },
+    {
+        "id": "2",
+        "name": "Jane Smith",
+        "department": "Marketing",
+        "salary": 65000.0
+    },
+    {
+        "id": "3",
+        "name": "Emily Johnson",
+        "department": "Finance",
+        "salary": 80000.0
+    },
+    {
+        "id": "4",
+        "name": "Michael Brown",
+        "department": "HR",
+        "salary": 60000.0
+    }
+]
