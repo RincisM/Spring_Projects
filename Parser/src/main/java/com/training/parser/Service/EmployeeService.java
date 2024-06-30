@@ -1,6 +1,7 @@
 package com.training.parser.Service;
 
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,5 +48,52 @@ public class EmployeeService {
             employeeJson.put("salary", employee.getSalary());
             employeesArray.add(employeeJson);
         }
+
+        FileWriter writer = new FileWriter(FILE_PATH);
+        writer.write(employeesArray.toJSONString());
+        writer.close();
+    }
+
+    public void addEmployee(Employee employee) throws IOException, ParseException {
+        List<Employee> employees = readEmployees();
+        for(Employee emp : employees) {
+            if(emp.getId().equals(employee.getId())) {
+                throw new IllegalArgumentException("Employee with ID " + employee.getId() + " already exists");
+            }
+        }
+        employees.add(employee);
+        writeEmployees(employees);
+    }
+
+    public void updateEmployee(Employee employee) throws IOException, ParseException {
+        List<Employee> employees = readEmployees();
+        boolean found = false;
+        for(int i= 0; i < employees.size(); i++) {
+            if(employees.get(i).getId().equals(employee.getId())) {
+                employees.set(i, employee);
+                found = true;
+                break;
+            }
+        }
+        if(!found) {
+            throw new IllegalArgumentException("Employee with ID " + employee.getId() + " not found");
+        }
+        writeEmployees(employees);
+    }
+
+    public void deleteEmployee(String id) throws IOException, ParseException {
+        List<Employee> employees = readEmployees();
+        employees.removeIf(emp -> emp.getId().equals(id));
+        writeEmployees(employees);
+    }
+
+    public Employee getEmployee(String id) throws IOException, ParseException {
+        List<Employee> employees = readEmployees();
+        for (Employee emp : employees) {
+            if(emp.getId().equals(id)) {
+                return emp;
+            }
+        }
+        throw new IllegalArgumentException("Employee with ID " + id + "not found");
     }
 }
