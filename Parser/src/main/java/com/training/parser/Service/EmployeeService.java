@@ -38,6 +38,7 @@ public class EmployeeService {
         return employees;
     }
 
+    @SuppressWarnings("unchecked")
     public void writeEmployees(List<Employee> employees) throws IOException {
         JSONArray employeesArray = new JSONArray();
         for(Employee employee : employees) {
