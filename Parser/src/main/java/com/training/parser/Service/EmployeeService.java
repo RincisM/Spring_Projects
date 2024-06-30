@@ -109,6 +109,7 @@ public class EmployeeService {
         throw new IllegalArgumentException("Employee with ID " + id + "not found");
     }
 
+    // Service to get Employees by department
     public List<Employee> getEmployeesByDepartment(String department) throws IOException, ParseException {
 
         // Read all the employees and store it as a List
