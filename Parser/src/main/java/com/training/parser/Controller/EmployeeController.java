@@ -27,22 +27,25 @@ public class EmployeeController {
     @Autowired
     private EmployeeService employeeService;
 
+    // Get Method to retrieve all employees
     @GetMapping
     public List<Employee> getAllEmployees() throws IOException, ParseException {
         return employeeService.readEmployees();
     }
 
+    // Get Method to retrieve employees with the given id
     @GetMapping("/{id}")
     public Employee getEmployee(@PathVariable("id") String id) throws IOException, ParseException {
         return employeeService.getEmployee(id);
     }
 
+    // Get Method to retrieve employees with the given department
     @GetMapping("/department/{department}")
     public List<Employee> getEmployeesByDepartment(@PathVariable String department) throws IOException, ParseException {
         return employeeService.getEmployeesByDepartment(department);
     }
     
-
+    // Post Method to add new Employee
     @PostMapping
     public ResponseEntity<String> addEmployee(@RequestBody Employee employee) {
         try {
@@ -53,6 +56,7 @@ public class EmployeeController {
         }
     }
 
+    // Put Method to update and existing employee
     @PutMapping
     public ResponseEntity<String> updateEmployee(@RequestBody Employee employee) {
         try {
@@ -63,6 +67,7 @@ public class EmployeeController {
         }
     }
 
+    // Delete Method to delete an employee with a given id
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteEmployee(@PathVariable String id) {
         try {
