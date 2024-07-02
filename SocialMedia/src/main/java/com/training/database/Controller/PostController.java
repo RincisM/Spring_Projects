@@ -36,9 +36,9 @@ public class PostController {
         return postService.createPost(post.getUserName(), post.getPost());
     }
 
-    @PutMapping
-    public ResponseEntity<?> updatePost(@RequestBody Post post) {
-        return postService.editPost(post.getId(), post.getPost());
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updatePost(@PathVariable("id") int id, @RequestBody Post post) {
+        return postService.editPost(id, post.getPost());
     }
 
     @DeleteMapping("/{id}")

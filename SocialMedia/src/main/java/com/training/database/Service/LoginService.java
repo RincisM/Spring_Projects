@@ -51,16 +51,19 @@ public class LoginService {
     public ResponseEntity<String> registerUser(Profile newUserProfile) {
         ResponseEntity<String> response;
         try {
-            Optional<Profile> existingProfile = profileRepository.findByUserName(newUserProfile);
+            Optional<Profile> existingProfile = profileRepository.findByUserName(newUserProfile.getUserName());
+            logger.info("repository created");
             String message = "No Such User Exists";
             if(existingProfile.isPresent()) {
+                logger.info("Checking username");
                 message = "Username Already Exists";
             } else {
-               Users newUser = new Users(newUserProfile.getUserName(), newUserProfile.getPassword());
-               userRepository.save(newUser);
-               profileRepository.save(newUserProfile);
-               message = "User created Successfully";
-               userLogged = true;
+                logger.info("new user exists");
+                Users newUser = new Users(newUserProfile.getUserName(), newUserProfile.getPassword());
+                userRepository.save(newUser);
+                profileRepository.save(newUserProfile);
+                message = "User created Successfully";
+                userLogged = true;
             }
             response = ResponseEntity.ok(message);
         } catch (Exception e) {

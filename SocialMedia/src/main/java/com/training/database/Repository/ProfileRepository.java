@@ -11,5 +11,5 @@ import com.training.database.Entity.Profile;
 @Repository
 public interface ProfileRepository extends JpaRepository<Profile, Integer>{
     Optional<Profile> findByEmail(String email);
-    Optional<Profile> findByUserName(Profile newUserProfile);
+    Optional<Profile> findByUserName(String username);
 }

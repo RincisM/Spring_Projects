@@ -29,11 +29,10 @@ public class PostService {
     //     this.userService = userService;
     // }
 
-    List<Post> posts = postRepository.findAll();
-
     // To get all Posts
     public ResponseEntity<?> getAllPost() {
         try {
+            List<Post> posts = postRepository.findAll();
             if(!posts.isEmpty()) {
                 return new ResponseEntity<>(posts, HttpStatus.OK);
             } else {
@@ -48,6 +47,7 @@ public class PostService {
     // To get all Posts for a given user name
     public ResponseEntity<?> getAllPostByUser(String userName) {
         try {
+            List<Post> posts = postRepository.findAll();
             List<Post> postByUser = new ArrayList<>();
             for(Post post: posts) {
                 if(post.getUserName().equals(userName)) {
