@@ -18,30 +18,37 @@ import com.training.database.Service.PostService;
 @RequestMapping("/society")
 public class PostController {
 
+    // Controller class to handle the http request to Post content to the Social Media Application
+
     @Autowired
     private PostService postService;
 
+    // Method to Get all the posts
     @GetMapping
     public ResponseEntity<?> getPost() {
         return postService.getAllPost();
     }
 
+    // Method to get posts by username
     @GetMapping("/{userName}")
     public ResponseEntity<?> getPost(@PathVariable("userName") String userName) {
         return postService.getAllPostByUser(userName);
     }
 
+    // Method to create new post
     @PostMapping
     public ResponseEntity<?> createPost(@RequestBody Post post) {
         return postService.createPost(post.getUserName(), post.getPost());
     }
 
+    // Method to update a post by a given id
     @PutMapping("/{id}")
     public ResponseEntity<?> updatePost(@PathVariable("id") int id, @RequestBody Post post) {
         return postService.editPost(id, post.getPost());
     }
 
-    @DeleteMapping("/{id}")
+    // Method to delete a post by a given id
+    @DeleteMapping("/post/{id}")
     public ResponseEntity<?> deletePost(@PathVariable("id") int id) {
         return postService.deletePost(id);
     }

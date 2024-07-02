@@ -16,6 +16,10 @@ import com.training.database.Repository.PostRepository;
 
 @Service
 public class PostService {
+
+    // Post Service class - Contains Business Logic for Posting content in the Application
+
+    // A Custom Logger, other than the default logger
     private static final Logger logger = LoggerFactory.getLogger(PostService.class);
 
     @Autowired
@@ -29,9 +33,10 @@ public class PostService {
     //     this.userService = userService;
     // }
 
-    // To get all Posts
+    // Service to get all Posts
     public ResponseEntity<?> getAllPost() {
         try {
+            // Retrieving all the posts in a List
             List<Post> posts = postRepository.findAll();
             if(!posts.isEmpty()) {
                 return new ResponseEntity<>(posts, HttpStatus.OK);
@@ -44,10 +49,12 @@ public class PostService {
         }
     }
 
-    // To get all Posts for a given user name
+    // Service to get all Posts for a given user name
     public ResponseEntity<?> getAllPostByUser(String userName) {
         try {
+            // Retrieving all posts in a list
             List<Post> posts = postRepository.findAll();
+            // Creating a new list to store the resulting posts filtered by user
             List<Post> postByUser = new ArrayList<>();
             for(Post post: posts) {
                 if(post.getUserName().equals(userName)) {
@@ -65,13 +72,16 @@ public class PostService {
         }
     }
 
-    // To create a Post
+    // Service to create a Post
     public ResponseEntity<?> createPost(String userName, String newPostContent) {
         try {
+            // Creating a Post only when the user is logged
             if(!userService.isUserLogged()) {
                 return new ResponseEntity<>("User not logged in", HttpStatus.UNAUTHORIZED);
             }
+            // Create a new Post
             Post newPost = new Post(userName, newPostContent);
+            // Save the post in the repository
             postRepository.save(newPost);
             return new ResponseEntity<>("Post created succesfully", HttpStatus.CREATED);
         } catch (Exception e) {
@@ -80,16 +90,20 @@ public class PostService {
         }
     }
 
-    // To Edit a Post
+    // Service to Edit a Post
     public ResponseEntity<?> editPost(int postId, String newPostContent) {
         try {
+            // Editing a post only when the user is logged
             if(!userService.isUserLogged()) {
                 return new ResponseEntity<>("User not logged in", HttpStatus.UNAUTHORIZED);
             }
+            // Finding the post by the given id
             Optional<Post> optionalPost = postRepository.findById(postId);
             if(optionalPost.isPresent()) {
                 Post post = optionalPost.get();
+                // Update the Post
                 post.setPost(newPostContent);
+                // Save the post in the repository
                 postRepository.save(post);
                 return new ResponseEntity<>("Post Updated Successfully", HttpStatus.OK);
             } else {
@@ -101,14 +115,17 @@ public class PostService {
         }
     }
 
-    // To Delete a Post
+    // Service to Delete a Post
     public ResponseEntity<String> deletePost(int postId) {
         try {
+            // Deleting a post only when the user is logged
             if(!userService.isUserLogged()) {
                 return new ResponseEntity<>("User not logged in", HttpStatus.UNAUTHORIZED);
             }
+            // Finding the post by the given id
             Optional<Post> optionalPost = postRepository.findById(postId);
             if(optionalPost.isPresent()) {
+                // Delete the post from the repository
                 postRepository.delete(optionalPost.get());
                 return new ResponseEntity<>("Post Deleted Successfully", HttpStatus.OK);
             } else {

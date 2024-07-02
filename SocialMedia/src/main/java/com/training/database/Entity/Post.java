@@ -16,10 +16,13 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class Post {
+
+    // Post Entity Class - Pojo class represents the fields of Post
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="post_id")
-    private int id;
+    private int id; // Primary Key in the Post_Table
 
     private String userName;
     private String post;

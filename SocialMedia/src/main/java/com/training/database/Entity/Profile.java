@@ -16,10 +16,13 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Profile {
+
+    // Profile Entity Class - Pojo class represents the fields of Profile
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="profile_id")
-    private int id;
+    private int id; // Primary Key of the Profile_Table
 
     private String firstName;
     private String lastName;

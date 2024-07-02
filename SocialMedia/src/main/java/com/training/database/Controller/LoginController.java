@@ -17,26 +17,32 @@ import com.training.database.Service.LoginService;
 @RestController
 @RequestMapping("/society")
 public class LoginController {
+
+    // Controller class to handle the http requests for login service of social media application
     
     @Autowired
     private LoginService userService;
 
+    // Method to Login
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody Users user) {
         return userService.loginUser(user.getUserName(), user.getPassword());
     }
 
+    // Method to Register
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody Profile profile) {
         return userService.registerUser(profile);
     }
 
+    // Method to Update the User Profile
     @PatchMapping("/update")
     public ResponseEntity<String> update(@RequestBody Profile profile) {
         return userService.updateUser(profile, profile.getEmail());
     }
 
-    @DeleteMapping("/{email}")
+    // Method to delete the User Profile
+    @DeleteMapping("/user/{email}")
     public ResponseEntity<String> delete(@PathVariable("email") String email) {
         return userService.deleteUser(email);
     }
