@@ -2,6 +2,7 @@ package com.training.database.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,11 +12,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.training.database.Entity.Post;
+import com.training.database.Repository.PostRepository;
 
 @Service
 public class PostService {
     private static final Logger logger = LoggerFactory.getLogger(PostService.class);
-    public List<Post> posts = new ArrayList<>();
+
+    @Autowired
+    private PostRepository postRepository;
 
     @Autowired
     private LoginService userService;
@@ -24,6 +28,8 @@ public class PostService {
     // public PostService(UserService userService) {
     //     this.userService = userService;
     // }
+
+    List<Post> posts = postRepository.findAll();
 
     // To get all Posts
     public ResponseEntity<?> getAllPost() {
@@ -66,7 +72,7 @@ public class PostService {
                 return new ResponseEntity<>("User not logged in", HttpStatus.UNAUTHORIZED);
             }
             Post newPost = new Post(userName, newPostContent);
-            posts.add(newPost);
+            postRepository.save(newPost);
             return new ResponseEntity<>("Post created succesfully", HttpStatus.CREATED);
         } catch (Exception e) {
             logger.error("Error creating a post", e);
@@ -80,15 +86,11 @@ public class PostService {
             if(!userService.isUserLogged()) {
                 return new ResponseEntity<>("User not logged in", HttpStatus.UNAUTHORIZED);
             }
-            boolean postUpdated = false;
-            for(Post post: posts) {
-                if(post.getId() == postId) {
-                    post.setPost(newPostContent);
-                    postUpdated = true;
-                    break;
-                }
-            }
-            if(postUpdated) {
+            Optional<Post> optionalPost = postRepository.findById(postId);
+            if(optionalPost.isPresent()) {
+                Post post = optionalPost.get();
+                post.setPost(newPostContent);
+                postRepository.save(post);
                 return new ResponseEntity<>("Post Updated Successfully", HttpStatus.OK);
             } else {
                 return new ResponseEntity<>("Post not found", HttpStatus.NOT_FOUND);
@@ -105,15 +107,9 @@ public class PostService {
             if(!userService.isUserLogged()) {
                 return new ResponseEntity<>("User not logged in", HttpStatus.UNAUTHORIZED);
             }
-            boolean deleted = false;
-            for(Post post: posts) {
-                if(post.getId() == postId) {
-                    posts.remove(post);
-                    deleted = true;
-                    break;
-                }
-            }
-            if(deleted) {
+            Optional<Post> optionalPost = postRepository.findById(postId);
+            if(optionalPost.isPresent()) {
+                postRepository.delete(optionalPost.get());
                 return new ResponseEntity<>("Post Deleted Successfully", HttpStatus.OK);
             } else {
                 return new ResponseEntity<>("Post with ID: "+ postId + " not found", HttpStatus.NOT_FOUND);

@@ -1,39 +1,42 @@
 package com.training.database.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.training.database.Entity.Profile;
 import com.training.database.Entity.Users;
+import com.training.database.Repository.ProfileRepository;
+import com.training.database.Repository.UserRepository;
 
 @Service
 public class LoginService {
     private static final Logger logger = LoggerFactory.getLogger(LoginService.class);
     private boolean userLogged = false;
-    private List<Users> users = new ArrayList<>();
-    private List<Profile> userProfiles = new ArrayList<>();
+
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private ProfileRepository profileRepository;
 
     // Service for an User to Login
     public ResponseEntity<String> loginUser(String userName, String password) {
         ResponseEntity<String> response;
         try {
+            Optional<Users> optionalUser = userRepository.findByUserName(userName);
             String message = "No Such User Exists";
-            for(Users user: users) {
-                if(user.getUserName().equals(userName)) {
-                    if(user.getPassword().equals(password)) {
-                        userLogged = true;
-                        message = "User Logged in Successfully";
-                        break;
-                    } else {
-                        message = "Invalid Password";
-                    }
-                    break;
+            if(optionalUser.isPresent()) {
+                Users user = optionalUser.get();
+                if(user.getPassword().equals(password)) {
+                    userLogged = true;
+                    message = "User Logged in Successfully";
+                } else {
+                    message = "Invalid Password";
                 }
             }
             response = ResponseEntity.ok(message);
@@ -47,18 +50,15 @@ public class LoginService {
     // Service for new user to Register
     public ResponseEntity<String> registerUser(Profile newUserProfile) {
         ResponseEntity<String> response;
-        boolean newUser = true;
         try {
+            Optional<Profile> existingProfile = profileRepository.findByUserName(newUserProfile);
             String message = "No Such User Exists";
-            for(Profile userProfile: userProfiles) {
-                if(userProfile.getUserName().equals(newUserProfile.getUserName())) {
-                    newUser = false;
-                    message = "Username Already Exists";
-                    break;
-                }
-            }
-            if(newUser) {
-               userProfiles.add(newUserProfile);
+            if(existingProfile.isPresent()) {
+                message = "Username Already Exists";
+            } else {
+               Users newUser = new Users(newUserProfile.getUserName(), newUserProfile.getPassword());
+               userRepository.save(newUser);
+               profileRepository.save(newUserProfile);
                message = "User created Successfully";
                userLogged = true;
             }
@@ -75,17 +75,17 @@ public class LoginService {
         ResponseEntity<String> response;
         boolean userUpdated = false;
         try {
+            Optional<Profile> optionalProfile = profileRepository.findByEmail(email);
             String message = "No Such User Exists";
-            for(int i = 0; i < userProfiles.size(); i++) {
-                if(userProfiles.get(i).getEmail().equals(email)) {
-                    userProfiles.get(i).setFirstName(newUserProfile.getFirstName());
-                    userProfiles.get(i).setLastName(newUserProfile.getLastName());
-                    userProfiles.get(i).setAge(newUserProfile.getAge());
-                    userProfiles.get(i).setUserName(newUserProfile.getUserName());
-                    userProfiles.get(i).setPassword(newUserProfile.getPassword());
-                    userUpdated = true;
-                    break;
-                }
+            if(optionalProfile.isPresent()) {
+                Profile existingProfile = optionalProfile.get();
+                existingProfile.setFirstName(newUserProfile.getFirstName());
+                existingProfile.setLastName(newUserProfile.getLastName());
+                existingProfile.setAge(newUserProfile.getAge());
+                existingProfile.setUserName(newUserProfile.getUserName());
+                existingProfile.setPassword(newUserProfile.getPassword());
+                profileRepository.save(existingProfile);
+                userUpdated = true;
             }
             if(userUpdated) {
                message = "User updated Successfully";
@@ -102,14 +102,13 @@ public class LoginService {
         ResponseEntity<String> response;
         boolean userDeleted = false;
         try {
+            Optional<Profile> optionalProfile = profileRepository.findByEmail(email);
             String message = "No Such User Exists";
-            for(Profile userProfile: userProfiles) {
-                if(userProfile.getEmail().equals(email)) {
-                    userDeleted = true;
-                    userProfiles.remove(userProfile);
-                    break;
-                }
+            if(optionalProfile.isPresent()) {
+                profileRepository.delete(optionalProfile.get());
+                userDeleted = true;
             }
+
             if(userDeleted) {
                message = "User deleted Successfully";
             }
