@@ -26,7 +26,7 @@ public class LoginController {
     // Method to Login
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody Users user) {
-        return loginService.loginUser(user.getUserName(), user.getPassword());
+        return loginService.loginUser(user);
     }
 
     // Method to Register

@@ -38,13 +38,13 @@ public class PostController {
     // Method to create new post
     @PostMapping
     public ResponseEntity<?> createPost(@RequestBody Post post) {
-        return postService.createPost(post.getUserName(), post.getPost());
+        return postService.createPost(post);
     }
 
     // Method to update a post by a given id
     @PutMapping("/{id}")
     public ResponseEntity<?> updatePost(@PathVariable("id") int id, @RequestBody Post post) {
-        return postService.editPost(id, post.getPost());
+        return postService.editPost(id, post);
     }
 
     // Method to delete a post by a given id

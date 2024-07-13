@@ -29,16 +29,16 @@ public class LoginService {
     private ProfileRepository profileRepository;
 
     // Service for an User to Login
-    public ResponseEntity<String> loginUser(String userName, String password) {
+    public ResponseEntity<String> loginUser(Users user) {
         ResponseEntity<String> response;
         try {
             // Finding if a particular userName exists already
-            Optional<Users> optionalUser = userRepository.findByUserName(userName);
+            Optional<Users> optionalUser = userRepository.findByUserName(user.getUserName());
             String message = "No Such User Exists";
             if(optionalUser.isPresent()) {
-                Users user = optionalUser.get();
+                Users existingUser = optionalUser.get();
                 // If UserName exists, finding if the password match
-                if(user.getPassword().equals(password)) {
+                if(existingUser.getPassword().equals(user.getPassword())) {
                     // If password matched, user is logged in
                     userLogged = true;
                     message = "User Logged in Successfully";

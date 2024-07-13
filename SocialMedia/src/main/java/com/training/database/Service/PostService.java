@@ -76,19 +76,19 @@ public class PostService {
     }
 
     // Service to create a Post
-    public ResponseEntity<?> createPost(String userName, String newPostContent) {
+    public ResponseEntity<?> createPost(Post post) {
         try {
             // Creating a Post only when the user is logged
             if(!loginService.isUserLogged()) {
                 return new ResponseEntity<>("User not logged in", HttpStatus.UNAUTHORIZED);
             }
             // Finding the user by username
-            Optional<Users> optionalUser = userRepository.findByUserName(userName);
+            Optional<Users> optionalUser = userRepository.findByUserName(post.getUser().getUserName());
             if(optionalUser.isPresent()) {
                 Users user = optionalUser.get();
                 
                 // Create a new Post
-                Post newPost = new Post(user, newPostContent);
+                Post newPost = new Post(user, post.getPost());
 
                 // Add the Post to the User
                 user.addPost(newPost);
@@ -106,7 +106,7 @@ public class PostService {
     }
 
     // Service to Edit a Post
-    public ResponseEntity<?> editPost(int postId, String newPostContent) {
+    public ResponseEntity<?> editPost(int postId, Post post) {
         try {
             // Editing a post only when the user is logged
             if(!loginService.isUserLogged()) {
@@ -115,11 +115,11 @@ public class PostService {
             // Finding the post by the given id
             Optional<Post> optionalPost = postRepository.findById(postId);
             if(optionalPost.isPresent()) {
-                Post post = optionalPost.get();
+                Post existingPost = optionalPost.get();
                 // Update the Post
-                post.setPost(newPostContent);
+                existingPost.setPost(post.getPost());
                 // Save the post in the repository
-                postRepository.save(post);
+                postRepository.save(existingPost);
                 return new ResponseEntity<>("Post Updated Successfully", HttpStatus.OK);
             } else {
                 return new ResponseEntity<>("Post not found", HttpStatus.NOT_FOUND);
