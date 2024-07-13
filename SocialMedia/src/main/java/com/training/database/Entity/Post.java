@@ -5,6 +5,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,11 +26,15 @@ public class Post {
     @Column(name="post_id")
     private int id; // Primary Key in the Post_Table
 
-    private String userName;
+    // A single user can have any number of posts
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private Users user;
+    
     private String post;
 
-    public Post(String userName, String post) {
-        this.userName = userName;
+    public Post(Users user, String post) {
+        this.user = user;
         this.post = post;
     }
 }
