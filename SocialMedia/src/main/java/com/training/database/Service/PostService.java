@@ -1,6 +1,5 @@
 package com.training.database.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,7 +11,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.training.database.Entity.Post;
+import com.training.database.Entity.Users;
 import com.training.database.Repository.PostRepository;
+import com.training.database.Repository.UserRepository;
 
 @Service
 public class PostService {
@@ -26,7 +27,10 @@ public class PostService {
     private PostRepository postRepository;
 
     @Autowired
-    private LoginService userService;
+    private UserRepository userRepository;
+
+    @Autowired
+    private LoginService loginService;
 
     // // Constructor Injection
     // public PostService(UserService userService) {
@@ -52,19 +56,18 @@ public class PostService {
     // Service to get all Posts for a given user name
     public ResponseEntity<?> getAllPostByUser(String userName) {
         try {
-            // Retrieving all posts in a list
-            List<Post> posts = postRepository.findAll();
-            // Creating a new list to store the resulting posts filtered by user
-            List<Post> postByUser = new ArrayList<>();
-            for(Post post: posts) {
-                if(post.getUserName().equals(userName)) {
-                    postByUser.add(post);
+            //Finding the user by username
+            Optional<Users> optionalUser = userRepository.findByUserName(userName);
+            if(optionalUser.isPresent()) {
+                Users user = optionalUser.get();
+                List<Post> postByUser = user.getPosts();
+                if(!postByUser.isEmpty()) {
+                    return new ResponseEntity<>(postByUser, HttpStatus.OK);
+                } else {
+                    return new ResponseEntity<>("No Posts found. Create new Post", HttpStatus.NO_CONTENT);
                 }
-            }
-            if(!postByUser.isEmpty()) {
-                return new ResponseEntity<>(postByUser, HttpStatus.OK);
             } else {
-                return new ResponseEntity<>("No Posts found. Create new Post", HttpStatus.NO_CONTENT);
+                return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
             }
         } catch (Exception e) {
             logger.error("Error retrieving posts", e);
@@ -76,14 +79,26 @@ public class PostService {
     public ResponseEntity<?> createPost(String userName, String newPostContent) {
         try {
             // Creating a Post only when the user is logged
-            if(!userService.isUserLogged()) {
+            if(!loginService.isUserLogged()) {
                 return new ResponseEntity<>("User not logged in", HttpStatus.UNAUTHORIZED);
             }
-            // Create a new Post
-            Post newPost = new Post(userName, newPostContent);
-            // Save the post in the repository
-            postRepository.save(newPost);
-            return new ResponseEntity<>("Post created succesfully", HttpStatus.CREATED);
+            // Finding the user by username
+            Optional<Users> optionalUser = userRepository.findByUserName(userName);
+            if(optionalUser.isPresent()) {
+                Users user = optionalUser.get();
+                
+                // Create a new Post
+                Post newPost = new Post(user, newPostContent);
+
+                // Add the Post to the User
+                user.addPost(newPost);
+
+                // Save the user, cascading will save the post
+                userRepository.save(user);
+                return new ResponseEntity<>("Post created succesfully", HttpStatus.CREATED);
+            } else {
+                return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
+            }
         } catch (Exception e) {
             logger.error("Error creating a post", e);
             return new ResponseEntity<>("An error occurred while creating a post", HttpStatus.INTERNAL_SERVER_ERROR);
@@ -94,7 +109,7 @@ public class PostService {
     public ResponseEntity<?> editPost(int postId, String newPostContent) {
         try {
             // Editing a post only when the user is logged
-            if(!userService.isUserLogged()) {
+            if(!loginService.isUserLogged()) {
                 return new ResponseEntity<>("User not logged in", HttpStatus.UNAUTHORIZED);
             }
             // Finding the post by the given id
@@ -119,7 +134,7 @@ public class PostService {
     public ResponseEntity<String> deletePost(int postId) {
         try {
             // Deleting a post only when the user is logged
-            if(!userService.isUserLogged()) {
+            if(!loginService.isUserLogged()) {
                 return new ResponseEntity<>("User not logged in", HttpStatus.UNAUTHORIZED);
             }
             // Finding the post by the given id
