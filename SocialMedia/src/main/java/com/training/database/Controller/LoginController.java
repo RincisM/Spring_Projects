@@ -38,7 +38,7 @@ public class LoginController {
     // Method to Update the User Profile
     @PatchMapping("/update")
     public ResponseEntity<String> update(@RequestBody Profile profile) {
-        return loginService.updateUser(profile, profile.getEmail());
+        return loginService.updateUser(profile);
     }
 
     // Method to delete the User Profile

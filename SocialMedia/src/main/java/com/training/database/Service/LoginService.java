@@ -85,21 +85,21 @@ public class LoginService {
     }
 
     // Service to update the user profile
-    public ResponseEntity<String> updateUser(Profile newUserProfile, String email) {
+    public ResponseEntity<String> updateUser(Profile profile) {
         ResponseEntity<String> response;
         boolean userUpdated = false;
         try {
             // Finding the Profile of a user by their email
-            Optional<Profile> optionalProfile = profileRepository.findByEmail(email);
+            Optional<Profile> optionalProfile = profileRepository.findByEmail(profile.getEmail());
             String message = "No Such User Exists";
             if(optionalProfile.isPresent()) {
                 // If a profile is found, update it fields
                 Profile existingProfile = optionalProfile.get();
-                existingProfile.setFirstName(newUserProfile.getFirstName());
-                existingProfile.setLastName(newUserProfile.getLastName());
-                existingProfile.setAge(newUserProfile.getAge());
-                existingProfile.setUserName(newUserProfile.getUserName());
-                existingProfile.setPassword(newUserProfile.getPassword());
+                existingProfile.setFirstName(profile.getFirstName());
+                existingProfile.setLastName(profile.getLastName());
+                existingProfile.setAge(profile.getAge());
+                existingProfile.setUserName(profile.getUserName());
+                existingProfile.setPassword(profile.getPassword());
                 // Store the updated profile in the repository
                 profileRepository.save(existingProfile);
                 userUpdated = true;
