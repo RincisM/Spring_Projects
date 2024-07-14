@@ -38,7 +38,7 @@ public class PostController {
     // Method to create new post
     @PostMapping
     public ResponseEntity<?> createPost(@RequestBody Post post) {
-        return postService.createPost(post);
+        return postService.createPost(post.getUser().getUserName(), post.getPost());
     }
 
     // Method to update a post by a given id

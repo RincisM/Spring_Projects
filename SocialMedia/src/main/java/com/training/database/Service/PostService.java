@@ -76,19 +76,19 @@ public class PostService {
     }
 
     // Service to create a Post
-    public ResponseEntity<?> createPost(Post post) {
+    public ResponseEntity<?> createPost(String userName, String newPostContent) {
         try {
             // Creating a Post only when the user is logged
             if(!loginService.isUserLogged()) {
                 return new ResponseEntity<>("User not logged in", HttpStatus.UNAUTHORIZED);
             }
             // Finding the user by username
-            Optional<Users> optionalUser = userRepository.findByUserName(post.getUser().getUserName());
+            Optional<Users> optionalUser = userRepository.findByUserName(userName);
             if(optionalUser.isPresent()) {
                 Users user = optionalUser.get();
                 
                 // Create a new Post
-                Post newPost = new Post(user, post.getPost());
+                Post newPost = new Post(user, newPostContent);
 
                 // Add the Post to the User
                 user.addPost(newPost);
