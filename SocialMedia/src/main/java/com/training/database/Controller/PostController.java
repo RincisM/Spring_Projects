@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.training.database.DTO.CreatePostRequest;
-import com.training.database.Entity.Post;
 import com.training.database.Service.PostService;
 
 @RestController
