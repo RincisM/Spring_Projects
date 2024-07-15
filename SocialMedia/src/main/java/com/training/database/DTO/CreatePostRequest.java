@@ -1,5 +1,11 @@
 package com.training.database.DTO;
 
-public class CreatePostRequest {
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
+public class CreatePostRequest {
+    private String userName;
+    private String postContent;
 }

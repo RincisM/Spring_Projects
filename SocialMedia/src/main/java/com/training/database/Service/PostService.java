@@ -106,7 +106,7 @@ public class PostService {
     }
 
     // Service to Edit a Post
-    public ResponseEntity<?> editPost(int postId, Post post) {
+    public ResponseEntity<?> editPost(int postId, String post) {
         try {
             // Editing a post only when the user is logged
             if(!loginService.isUserLogged()) {
@@ -117,7 +117,7 @@ public class PostService {
             if(optionalPost.isPresent()) {
                 Post existingPost = optionalPost.get();
                 // Update the Post
-                existingPost.setPost(post.getPost());
+                existingPost.setPost(post);
                 // Save the post in the repository
                 postRepository.save(existingPost);
                 return new ResponseEntity<>("Post Updated Successfully", HttpStatus.OK);

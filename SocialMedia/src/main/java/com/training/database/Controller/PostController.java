@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.training.database.DTO.CreatePostRequest;
 import com.training.database.Entity.Post;
 import com.training.database.Service.PostService;
 
@@ -37,13 +38,13 @@ public class PostController {
 
     // Method to create new post
     @PostMapping
-    public ResponseEntity<?> createPost(@RequestBody Post post) {
-        return postService.createPost(post.getUser().getUserName(), post.getPost());
+    public ResponseEntity<?> createPost(@RequestBody CreatePostRequest createPostRequest) {
+        return postService.createPost(createPostRequest.getUserName(), createPostRequest.getPostContent());
     }
 
     // Method to update a post by a given id
     @PutMapping("/{id}")
-    public ResponseEntity<?> updatePost(@PathVariable("id") int id, @RequestBody Post post) {
+    public ResponseEntity<?> updatePost(@PathVariable("id") int id, @RequestBody String post) {
         return postService.editPost(id, post);
     }
 

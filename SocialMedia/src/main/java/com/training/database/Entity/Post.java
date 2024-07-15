@@ -1,5 +1,7 @@
 package com.training.database.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -26,6 +28,7 @@ public class Post {
     @Column(name="post_id")
     private int id; // Primary Key in the Post_Table
 
+    @JsonIgnore // To prevent recursive serialization loop when converting the entities to JSON
     // A single user can have any number of posts
     @ManyToOne
     @JoinColumn(name = "user_id")
